@@ -1,0 +1,49 @@
+package com.food.servlet;
+
+import java.io.IOException;
+
+import com.food.DAO.UserDAO;
+import com.food.DAOImpl.UserDAOImpl;
+import com.food.model.User;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@WebServlet("/register")
+public class RegisterServlet extends HttpServlet {
+
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String username =
+				request.getParameter("username");
+
+		String email =
+				request.getParameter("email");
+
+		String password =
+				request.getParameter("password");
+
+		User user =
+				new User(username,email,password);
+
+		UserDAO dao =
+				new UserDAOImpl();
+
+		boolean status =
+				dao.registerUser(user);
+
+		if(status) {
+
+			response.sendRedirect("login.jsp");
+
+		} else {
+
+			response.sendRedirect("register.jsp");
+		}
+	}
+}
